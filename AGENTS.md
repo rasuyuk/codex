@@ -1,27 +1,27 @@
-# Repository Guidelines
-The Codex agents repository is still being scaffolded, so use this guide to keep new work consistent and ready for collaboration.
+# リポジトリガイドライン
+Codex agents リポジトリはまだ足場を固めている段階です。作業内容を揃え、共同開発しやすくするため、このガイドに従ってください。
 
-## Project Structure & Module Organization
-- Place all runnable code under `src/` and keep module paths importable (add an empty `__init__.py` when creating a new package).
-- Store individual agent logic in `src/agents/<agent_name>/`, shared utilities in `src/shared/`, and CLI orchestration in `src/cli/`.
-- Check configuration and prompt assets into `configs/` and `assets/` respectively; document pipelines that cross module boundaries in `docs/`.
-- Mirror the module layout inside `tests/` (e.g., `tests/agents/test_researcher.py`) to make ownership obvious.
+## プロジェクト構造とモジュール構成
+- 実行可能なコードはすべて `src/` 配下に置き、モジュールパスからインポートできるように保ちます（新しいパッケージを作る場合は空の `__init__.py` を追加してください）。
+- 個別のエージェントロジックは `src/agents/<agent_name>/`、共有ユーティリティは `src/shared/`、CLI のオーケストレーションは `src/cli/` に配置します。
+- 設定やプロンプト関連のアセットはそれぞれ `configs/` と `assets/` に置き、モジュールをまたぐパイプラインは `docs/` にドキュメント化します。
+- `tests/` ではモジュール構成を鏡写しにし（例: `tests/agents/test_researcher.py`）、担当範囲を明確にします。
 
-## Build, Test, and Development Commands
-- `python -m venv .venv` — create a local virtual environment; commit only the activation scripts in `.gitignore`.
-- `source .venv/bin/activate` — enable the environment for all development commands.
-- `pip install -r requirements.txt` (or `pip install -e .` once `pyproject.toml` lands) — install runtime and tooling dependencies.
-- `pytest tests` — run the full test suite before pushing.
-- `ruff check src tests` and `black src tests` — lint and format; run both until they exit cleanly.
+## ビルド・テスト・開発コマンド
+- `python -m venv .venv` — ローカルの仮想環境を作成します。`.gitignore` には有効化スクリプトのみをコミットしてください。
+- `source .venv/bin/activate` — 以降の開発コマンドを実行するため仮想環境を有効化します。
+- `pip install -r requirements.txt`（`pyproject.toml` が整備されたら `pip install -e .`）— 実行時とツールの依存関係をインストールします。
+- `pytest tests` — プッシュ前に必ずテストスイート全体を実行します。
+- `ruff check src tests` と `black src tests` — リントと整形を実行し、どちらもクリーンに終了するまで繰り返します。
 
-## Coding Style & Naming Conventions
-Use four-space indentation, prefer f-strings for formatting, and type-annotate public functions. Agent packages follow snake_case module names while class names stay in PascalCase (`ResearchAgent`). Keep functions focused: short orchestration helpers in `src/cli/` and longer running loops in the agent package. Run `ruff` and `black` prior to every commit so reviewers only see intentional diffs.
+## コーディングスタイルと命名規則
+インデントは 4 スペースを基本とし、文字列フォーマットには f-string を優先して使用します。公開関数には型注釈を付けてください。エージェントのパッケージ名はスネークケース、クラス名はパスカルケース（例: `ResearchAgent`）で揃えます。関数は役割ごとに分割し、短いオーケストレーションヘルパーは `src/cli/` に、長く走るループはエージェントパッケージ内に置きます。コミット前には毎回 `ruff` と `black` を実行し、意図した差分だけがレビュー対象になるようにしてください。
 
-## Testing Guidelines
-Author tests with `pytest`; name files `test_<module>.py` and test functions `test_<behavior>`. Target 85% coverage or higher for new code and include regression tests whenever a bug is fixed. For async behaviors, lean on `pytest.mark.asyncio`. Provide fixtures in `tests/conftest.py` instead of repeating setup in multiple modules.
+## テストガイドライン
+テストは `pytest` で作成し、ファイル名は `test_<module>.py`、テスト関数名は `test_<behavior>` とします。新しいコードでは 85% 以上のカバレッジを目標とし、バグ修正時には回帰テストを追加します。非同期処理のテストには `pytest.mark.asyncio` を活用してください。共通のセットアップが必要な場合は、重複を避けるため `tests/conftest.py` にフィクスチャを用意します。
 
-## Commit & Pull Request Guidelines
-Follow Conventional Commits (`feat`, `fix`, `chore`, etc.) and keep the subject <= 72 characters (e.g., `feat(agent): add planning loop`). Each pull request needs: a concise summary, linked issue or ticket, test evidence (`pytest` output or screenshots for manual flows), and callouts for TODOs or follow-up work. Request at least one reviewer familiar with the touched agent before merging.
+## コミットとプルリクエストのガイドライン
+コミットメッセージは Conventional Commits（`feat`、`fix`、`chore` など）に従い、サブジェクトは 72 文字以内（例: `feat(agent): add planning loop`）に収めます。プルリクエストには簡潔なサマリ、関連する課題番号、テスト証跡（`pytest` の結果や手動検証のスクリーンショットなど）、TODO やフォローアップの共有事項を記載してください。マージ前には、対象エージェントに詳しいレビュアーを最低 1 名アサインしましょう。
 
-## Security & Configuration Tips
-Store secrets in local `.env` files that mirror `configs/example.env` and exclude them from commits. Document any new external integrations under `docs/security.md` with scopes, tokens, and rotation plans so the team can audit changes quickly.
+## セキュリティと設定のヒント
+シークレット類はローカルの `.env` に保存し、`configs/example.env` と同じ構成で管理します。これらはリポジトリにコミットしないでください。新しい外部連携を導入する際は、スコープやトークン、ローテーション方針を `docs/security.md` に記録し、チームがすぐに監査できるようにします。
