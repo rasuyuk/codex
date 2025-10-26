@@ -1,0 +1,11 @@
+# Python virtual environments
+.venv/
+
+# Bytecode cache
+__pycache__/
+
+# Pytest cache
+.pytest_cache/
+
+# macOS filesystem noise
+.DS_Store
